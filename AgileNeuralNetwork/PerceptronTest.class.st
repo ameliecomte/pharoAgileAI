@@ -109,6 +109,82 @@ PerceptronTest >> testOR [
 ]
 
 { #category : #tests }
+PerceptronTest >> testTrainingAND [
+    | p |
+    p := Neuron new.
+    p weights: #(-1 -1).
+    p bias: 2.
+    
+    25 timesRepeat: [ 
+        p train: #(0 0) desiredOutput: 0.
+        p train: #(0 1) desiredOutput: 0.
+        p train: #(1 0) desiredOutput: 0.
+        p train: #(1 1) desiredOutput: 1.
+    ].
+
+	self assert: (p feed: #(0 0)) equals: 0.
+	self assert: (p feed: #(0 1)) equals: 0.
+	self assert: (p feed: #(1 0)) equals: 0.
+	self assert: (p feed: #(1 1)) equals: 1.
+]
+
+{ #category : #tests }
+PerceptronTest >> testTrainingNOR [
+    | p |
+    p := Neuron new.
+    p weights: #(-1 -1).
+    p bias: 2.
+    
+    4 timesRepeat: [ 
+        p train: #(0 0) desiredOutput: 1.
+        p train: #(0 1) desiredOutput: 0.
+        p train: #(1 0) desiredOutput: 0.
+        p train: #(1 1) desiredOutput: 0.
+    ].
+
+    self assert: (p feed: #(0 0)) equals: 1.
+    self assert: (p feed: #(0 1)) equals: 0.
+    self assert: (p feed: #(1 0)) equals: 0.
+    self assert: (p feed: #(1 1)) equals: 0.
+]
+
+{ #category : #tests }
+PerceptronTest >> testTrainingNOT [
+    | p |
+    p := Neuron new.
+    p weights: #(-1).
+    p bias: 2.
+    
+    5 timesRepeat: [ 
+        p train: #(0) desiredOutput: 1.
+        p train: #(1) desiredOutput: 0.
+    ].
+    
+    self assert: (p feed: #(0)) equals: 1.
+    self assert: (p feed: #(1)) equals: 0.
+]
+
+{ #category : #tests }
+PerceptronTest >> testTrainingOR [
+    | p |
+    p := Neuron new.
+    p weights: #(-1 -1).
+    p bias: 2.
+    
+    32 timesRepeat: [ 
+        p train: #(0 0) desiredOutput: 0.
+        p train: #(0 1) desiredOutput: 1.
+        p train: #(1 0) desiredOutput: 1.
+        p train: #(1 1) desiredOutput: 1.
+    ].
+    
+    self assert: (p feed: #(0 0)) equals: 0.
+    self assert: (p feed: #(0 1)) equals: 1.
+    self assert: (p feed: #(1 0)) equals: 1.
+    self assert: (p feed: #(1 1)) equals: 1.
+]
+
+{ #category : #tests }
 PerceptronTest >> testWrongFeeding [
 	| p |
 	p := Neuron new.
